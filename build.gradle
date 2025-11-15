@@ -14,20 +14,42 @@ java {
     }
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
 repositories {
     mavenCentral()
+}
+
+ext {
+    mapstructVersion = "1.6.3"
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.postgresql:postgresql'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.liquibase:liquibase-core'
+//    implementation 'org.liquibase:liquibase-core'
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation "org.testcontainers:postgresql"
+}
+
+test {
+    systemProperty "file.encoding", "utf-8"
 }
 
 tasks.named('test') {
